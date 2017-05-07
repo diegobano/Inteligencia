@@ -26,10 +26,9 @@ acc = 0.001
 done = True
 
 while True:
-    if float(ex_pbs[0]) / len(ex) - float(db_pbs[0]) / len(db) < acc and \
-                                    float(test_pbs[0]) / len(ex) - float(db_pbs[0]) / len(db) < acc:
+    print ex_pbs[0]
+    if abs(float(ex_pbs[0]) / len(ex) - float(db_pbs[0]) / len(db)) < acc:
         break
-    print len(db)
     random.shuffle(db)
     ex = db[0:(len(db) / 10) * 8, :]
     ex_pbs = [0, 0]
