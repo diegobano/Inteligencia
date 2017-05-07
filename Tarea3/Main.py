@@ -40,6 +40,7 @@ class Main:
 
         for i in range(11):
             pol_thresh.append(np.linspace(min(pol_scores[i]), max(pol_scores[i]), thresh_num))
+            print min(pol_scores[i]), max(pol_scores[i])
             rbf_thresh.append(np.linspace(min(rbf_scores[i]), max(rbf_scores[i]), thresh_num))
 
         pol_predict = np.zeros((11, thresh_num, len(self.test)))
