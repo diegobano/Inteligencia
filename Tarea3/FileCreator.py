@@ -9,7 +9,8 @@ f.close()
 
 db_pbs = [0, 0]
 for i in range(len(db)):
-    db_pbs[0 if db[i, 48] <= 1 else 1] += 1
+    db[i, 48] = 0 if db[i, 48] <= 1 else 1
+    db_pbs[int(db[i, 48])] += 1
 
 random.shuffle(db)
 
@@ -18,9 +19,9 @@ ex_pbs = [0, 0]
 test = db[(len(db) / 10) * 8:, :]
 test_pbs = [0, 0]
 for i in range(len(ex)):
-    ex_pbs[0 if ex[i, 48] <= 1 else 1] += 1
+    ex_pbs[int(ex[i, 48])] += 1
 for i in range(len(test)):
-    test_pbs[0 if test[i, 48] <= 1 else 1] += 1
+    test_pbs[int(test[i, 48])] += 1
 
 acc = 0.001
 done = True
@@ -35,9 +36,9 @@ while True:
     test = db[(len(db) / 10) * 8:, :]
     test_pbs = [0, 0]
     for i in range(len(ex)):
-        ex_pbs[0 if ex[i, 48] <= 1 else 1] += 1
+        ex_pbs[int(ex[i, 48])] += 1
     for i in range(len(test)):
-        test_pbs[0 if test[i, 48] <= 1 else 1] += 1
+        test_pbs[int(test[i, 48])] += 1
 
 print db_pbs
 print ex_pbs
