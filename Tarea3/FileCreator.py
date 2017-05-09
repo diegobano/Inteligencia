@@ -7,11 +7,13 @@ for (i, line) in enumerate(f):
     db[i] = line.split(",")
 f.close()
 
+# Reetiquetado
 db_pbs = [0, 0]
 for i in range(len(db)):
     db[i, 48] = 0 if db[i, 48] <= 1 else 1
     db_pbs[int(db[i, 48])] += 1
 
+# Reordenamiento
 random.shuffle(db)
 
 ex = db[0:(len(db) / 10) * 8, :]
@@ -24,10 +26,8 @@ for i in range(len(test)):
     test_pbs[int(test[i, 48])] += 1
 
 acc = 0.001
-done = True
 
 while True:
-    print ex_pbs[0]
     if abs(float(ex_pbs[0]) / len(ex) - float(db_pbs[0]) / len(db)) < acc:
         break
     random.shuffle(db)
