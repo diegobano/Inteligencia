@@ -1,4 +1,3 @@
-
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -8,17 +7,18 @@ from datetime import timedelta
 import math
 
 # Convolutional Layer 1.
-filter_size1 = 5          # Filtros son de 5 x 5 pixeles.
-num_filters1 = 16         # Hay 16 de estos filtros.
+filter_size1 = 5  # Filtros son de 5 x 5 pixeles.
+num_filters1 = 16  # Hay 16 de estos filtros.
 
 # Convolutional Layer 2.
-filter_size2 = 5          # Filtros son de 5x5 pixeles.
-num_filters2 = 36         # Hay 16 de estos filtros.
+filter_size2 = 5  # Filtros son de 5x5 pixeles.
+num_filters2 = 36  # Hay 16 de estos filtros.
 
 # Fully-connected layer.
-fc_size = 128             # Número de neuronas de la capa fully-connected
+fc_size = 128  # Número de neuronas de la capa fully-connected
 
 from tensorflow.examples.tutorials.mnist import input_data
+
 data = input_data.read_data_sets('data/MNIST/', one_hot=True)
 
 print("Tamaños de los subconjuntos de la base de datos:")
@@ -40,16 +40,19 @@ num_channels = 1
 # Número de clases.
 num_classes = 10
 
+
 def new_weights(shape):
     return tf.Variable(tf.truncated_normal(shape, stddev=0.05))
+
 
 def new_biases(length):
     return tf.Variable(tf.constant(0.05, shape=[length]))
 
-def new_conv_layer(input,              # Capa anterior.
-                   num_input_channels, # Numero de canales de la capa anterior.
-                   filter_size,        # Ancho y alto de cada filtro.
-                   num_filters,        # Número de filtros.
+
+def new_conv_layer(input,  # Capa anterior.
+                   num_input_channels,  # Numero de canales de la capa anterior.
+                   filter_size,  # Ancho y alto de cada filtro.
+                   num_filters,  # Número de filtros.
                    use_pooling=True):  # Usar 2x2 max-pooling.
 
     # Forma de los filtros convolucionales (de acuerdo a la API de TF).
@@ -109,10 +112,11 @@ def flatten_layer(layer):
     # Retornar
     return layer_flat, num_features
 
-def new_fc_layer(input,          # Capa anterior.
-                 num_inputs,     # Numero de entradas.
-                 num_outputs,    # Numero de salidas.
-                 use_relu=True): # Decide si usar ReLU o no.
+
+def new_fc_layer(input,  # Capa anterior.
+                 num_inputs,  # Numero de entradas.
+                 num_outputs,  # Numero de salidas.
+                 use_relu=True):  # Decide si usar ReLU o no.
 
     # Crear pesos y biases.
     weights = new_weights(shape=[num_inputs, num_outputs])
@@ -127,11 +131,14 @@ def new_fc_layer(input,          # Capa anterior.
 
     return layer
 
+
 x = tf.placeholder(tf.float32, shape=[None, img_size_flat], name='x')
 
 x_image = tf.reshape(x, [-1, img_size, img_size, num_channels])
 
 y_true = tf.placeholder(tf.float32, shape=[None, 10], name='y_true')
+
+y_true_cls = tf.argmax(y_true, dimension=1)
 
 layer_conv1, weights_conv1 = \
     new_conv_layer(input=x_image,
@@ -139,3 +146,131 @@ layer_conv1, weights_conv1 = \
                    filter_size=filter_size1,
                    num_filters=num_filters1,
                    use_pooling=True)
+
+layer_conv2, weights_conv2 = \
+    new_conv_layer(input=layer_conv1,
+                   num_input_channels=num_filters1,
+                   filter_size=filter_size2,
+                   num_filters=num_filters2,
+                   use_pooling=True)
+
+layer_flat, num_features = flatten_layer(layer_conv2)
+
+layer_fc1 = new_fc_layer(input=layer_flat,
+                         num_inputs=num_features,
+                         num_outputs=fc_size,
+                         use_relu=True)
+
+layer_fc2 = new_fc_layer(input=layer_fc1,
+                         num_inputs=fc_size,
+                         num_outputs=num_classes,
+                         use_relu=False)
+
+y_pred = tf.nn.softmax(layer_fc2)
+y_pred_cls = tf.argmax(y_pred, dimension=1)
+
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
+                                                        labels=y_true)
+
+cost = tf.reduce_mean(cross_entropy)
+
+optimizer = tf.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
+
+correct_prediction = tf.equal(y_pred_cls, y_true_cls)
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+session = tf.Session(config=tf.ConfigProto(log_device_placement=True))
+
+session.run(tf.global_variables_initializer())
+
+# Entrenamiento realizado por batches.
+train_batch_size = 100
+
+# Contador de iteraciones.
+total_iterations = 0
+
+
+def optimize(num_iterations):
+    global total_iterations
+
+    # Tiempo de inicio
+    start_time = time.time()
+
+    for i in range(total_iterations,
+                   total_iterations + num_iterations):
+
+        # Obtener batch de conjunto de entrenamiento.
+        x_batch, y_true_batch = data.train.next_batch(train_batch_size)
+
+        # Se pone el batch en un diccionario asignándole nombres de las
+        # variables placeholder antes definidas.
+        feed_dict_train = {x: x_batch,
+                           y_true: y_true_batch}
+
+        # Ejecución del optimizador con los batches del diccionario.
+        session.run(optimizer, feed_dict=feed_dict_train)
+
+        # Se imprime elprogreso cada 100 iteraciones.
+        if i % 50 == 0:
+            acc = session.run(accuracy, feed_dict=feed_dict_train)
+            msg = "Iterations: {0:>6}, Training Accuracy: {1:>6.1%}"
+            print(msg.format(i, acc))
+
+    # Actualización del número de iteraciones.
+    total_iterations += num_iterations
+
+    # Tiempo de finalización.
+    end_time = time.time()
+
+    # Tiempo transcurrido.
+    time_dif = end_time - start_time
+
+    print("Time usage: " + str(timedelta(seconds=int(round(time_dif)))))
+
+
+# Dividir test set en batches. (Usa batches mas pequeños si la RAM falla).
+test_batch_size = 256
+
+
+def print_test_accuracy():
+    # Número de imagenes en test-set.
+    num_test = len(data.test.images)
+
+    # Crea arreglo para guardar clases predichas.
+    cls_pred = np.zeros(shape=num_test, dtype=np.int)
+
+    # Calcular clases predichas.
+    i = 0
+    while i < num_test:
+        j = min(i + test_batch_size, num_test)
+        images = data.test.images[i:j, :]
+        labels = data.test.labels[i:j, :]
+        feed_dict = {x: images,
+                     y_true: labels}
+
+        cls_pred[i:j] = session.run(y_pred_cls, feed_dict=feed_dict)
+        i = j
+
+    # Labels reales.
+    cls_true = data.test.cls
+
+    # Arreglo booleano de clasificaciones correctas.
+    correct = (cls_true == cls_pred)
+
+    # Número de clasificaciones correctas.
+    correct_sum = correct.sum()
+
+    # Accuracy
+    acc = float(correct_sum) / num_test
+    msg = "Accuracy on Test-Set: {0:.1%} ({1} / {2})"
+    print(msg.format(acc, correct_sum, num_test))
+
+
+# Definir número de iteraciones que desea entrenar a la red
+optimize(num_iterations=5500)
+
+print_test_accuracy()
+
+# Si usted ejecuta esta linea de código debe cerrar el notebook y reiniciarlo.
+# Es solo para informar como liberar los recursos que ocupa TF.
+# session.close()
