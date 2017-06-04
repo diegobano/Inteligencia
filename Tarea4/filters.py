@@ -1,3 +1,5 @@
+from tensorflow.examples.tutorials.mnist import input_data
+from scipy.signal import convolve2d
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
@@ -17,7 +19,6 @@ num_filters2 = 36  # Hay 16 de estos filtros.
 # Fully-connected layer.
 fc_size = 128  # Número de neuronas de la capa fully-connected
 
-from tensorflow.examples.tutorials.mnist import input_data
 
 data = input_data.read_data_sets('data/MNIST/', one_hot=True)
 
@@ -169,8 +170,7 @@ layer_fc2 = new_fc_layer(input=layer_fc1,
 y_pred = tf.nn.softmax(layer_fc2)
 y_pred_cls = tf.argmax(y_pred, dimension=1)
 
-cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2,
-                                                        labels=y_true)
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(logits=layer_fc2, labels=y_true)
 
 cost = tf.reduce_mean(cross_entropy)
 
@@ -184,7 +184,7 @@ session = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 session.run(tf.global_variables_initializer())
 
 # Entrenamiento realizado por batches.
-train_batch_size = 100
+train_batch_size = 50
 
 # Contador de iteraciones.
 total_iterations = 0
@@ -196,16 +196,14 @@ def optimize(num_iterations):
     # Tiempo de inicio
     start_time = time.time()
 
-    for i in range(total_iterations,
-                   total_iterations + num_iterations):
+    for i in range(total_iterations, total_iterations + num_iterations):
 
         # Obtener batch de conjunto de entrenamiento.
         x_batch, y_true_batch = data.train.next_batch(train_batch_size)
 
         # Se pone el batch en un diccionario asignándole nombres de las
         # variables placeholder antes definidas.
-        feed_dict_train = {x: x_batch,
-                           y_true: y_true_batch}
+        feed_dict_train = {x: x_batch, y_true: y_true_batch}
 
         # Ejecución del optimizador con los batches del diccionario.
         session.run(optimizer, feed_dict=feed_dict_train)
@@ -257,6 +255,9 @@ def print_test_accuracy():
     # Arreglo booleano de clasificaciones correctas.
     correct = (cls_true == cls_pred)
 
+    # Matriz de confusion
+    conf_mat = confusion_matrix(cls_true, cls_pred)
+
     # Número de clasificaciones correctas.
     correct_sum = correct.sum()
 
@@ -264,12 +265,45 @@ def print_test_accuracy():
     acc = float(correct_sum) / num_test
     msg = "Accuracy on Test-Set: {0:.1%} ({1} / {2})"
     print(msg.format(acc, correct_sum, num_test))
+    print("Confusion matrix obtained:")
+    print(conf_mat)
 
+num_iterations = int(10 * 55000 / train_batch_size)
 
+print("Testing with batch size {0}, and {1} iteration".format(train_batch_size, num_iterations))
 # Definir número de iteraciones que desea entrenar a la red
-optimize(num_iterations=5500)
+optimize(num_iterations=num_iterations)
 
 print_test_accuracy()
+
+for i in range(16):
+    mask = session.run(weights_conv1)[:, :, 0, i]
+    f = plt.figure()
+    a = f.add_subplot(1,1,1)
+    imgplot = plt.imshow(mask, cmap='gray')
+    a.set_title("Filter {}".format(i+1))
+    plt.show()
+
+num = 0
+for i, cls in enumerate(data.test.cls):
+    if int(cls) == 8:
+        num = i
+im = data.train.images[num]
+im = im.reshape((28,28))
+plt.imshow(im)
+plt.show()
+print(i)
+for i in range(16):
+    mask = session.run(weights_conv1)[:, :, 0, i]
+    im = data.train.images[num]
+    im = im.reshape((28, 28))
+    conv_img = convolve2d(im, mask)
+    # Two subplots, unpack the axes array immediately
+    f, (ax1, ax2) = plt.subplots(1, 2)
+    ax1.imshow(mask, cmap='gray')
+    ax2.imshow(conv_img)
+    plt.show()
+
 
 # Si usted ejecuta esta linea de código debe cerrar el notebook y reiniciarlo.
 # Es solo para informar como liberar los recursos que ocupa TF.
