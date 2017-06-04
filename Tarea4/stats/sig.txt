@@ -1,0 +1,124 @@
+Testing with sigmoid
+Iterations:      0, Training Accuracy:  13.0%
+Iterations:     50, Training Accuracy:  10.0%
+Iterations:    100, Training Accuracy:  10.0%
+Iterations:    150, Training Accuracy:   7.0%
+Iterations:    200, Training Accuracy:  15.0%
+Iterations:    250, Training Accuracy:  12.0%
+Iterations:    300, Training Accuracy:  11.0%
+Iterations:    350, Training Accuracy:   4.0%
+Iterations:    400, Training Accuracy:  17.0%
+Iterations:    450, Training Accuracy:  24.0%
+Iterations:    500, Training Accuracy:  13.0%
+Iterations:    550, Training Accuracy:   9.0%
+Iterations:    600, Training Accuracy:   9.0%
+Iterations:    650, Training Accuracy:  11.0%
+Iterations:    700, Training Accuracy:  25.0%
+Iterations:    750, Training Accuracy:  36.0%
+Iterations:    800, Training Accuracy:  31.0%
+Iterations:    850, Training Accuracy:  27.0%
+Iterations:    900, Training Accuracy:  71.0%
+Iterations:    950, Training Accuracy:  46.0%
+Iterations:   1000, Training Accuracy:  58.0%
+Iterations:   1050, Training Accuracy:  61.0%
+Iterations:   1100, Training Accuracy:  72.0%
+Iterations:   1150, Training Accuracy:  67.0%
+Iterations:   1200, Training Accuracy:  71.0%
+Iterations:   1250, Training Accuracy:  75.0%
+Iterations:   1300, Training Accuracy:  80.0%
+Iterations:   1350, Training Accuracy:  77.0%
+Iterations:   1400, Training Accuracy:  73.0%
+Iterations:   1450, Training Accuracy:  79.0%
+Iterations:   1500, Training Accuracy:  81.0%
+Iterations:   1550, Training Accuracy:  84.0%
+Iterations:   1600, Training Accuracy:  79.0%
+Iterations:   1650, Training Accuracy:  82.0%
+Iterations:   1700, Training Accuracy:  82.0%
+Iterations:   1750, Training Accuracy:  84.0%
+Iterations:   1800, Training Accuracy:  83.0%
+Iterations:   1850, Training Accuracy:  87.0%
+Iterations:   1900, Training Accuracy:  85.0%
+Iterations:   1950, Training Accuracy:  86.0%
+Iterations:   2000, Training Accuracy:  86.0%
+Iterations:   2050, Training Accuracy:  82.0%
+Iterations:   2100, Training Accuracy:  86.0%
+Iterations:   2150, Training Accuracy:  88.0%
+Iterations:   2200, Training Accuracy:  87.0%
+Iterations:   2250, Training Accuracy:  87.0%
+Iterations:   2300, Training Accuracy:  88.0%
+Iterations:   2350, Training Accuracy:  93.0%
+Iterations:   2400, Training Accuracy:  94.0%
+Iterations:   2450, Training Accuracy:  87.0%
+Iterations:   2500, Training Accuracy:  89.0%
+Iterations:   2550, Training Accuracy:  90.0%
+Iterations:   2600, Training Accuracy:  90.0%
+Iterations:   2650, Training Accuracy:  90.0%
+Iterations:   2700, Training Accuracy:  93.0%
+Iterations:   2750, Training Accuracy:  93.0%
+Iterations:   2800, Training Accuracy:  87.0%
+Iterations:   2850, Training Accuracy:  97.0%
+Iterations:   2900, Training Accuracy:  92.0%
+Iterations:   2950, Training Accuracy:  94.0%
+Iterations:   3000, Training Accuracy:  88.0%
+Iterations:   3050, Training Accuracy:  88.0%
+Iterations:   3100, Training Accuracy:  96.0%
+Iterations:   3150, Training Accuracy:  91.0%
+Iterations:   3200, Training Accuracy:  98.0%
+Iterations:   3250, Training Accuracy:  90.0%
+Iterations:   3300, Training Accuracy:  90.0%
+Iterations:   3350, Training Accuracy:  93.0%
+Iterations:   3400, Training Accuracy:  92.0%
+Iterations:   3450, Training Accuracy:  94.0%
+Iterations:   3500, Training Accuracy:  92.0%
+Iterations:   3550, Training Accuracy:  89.0%
+Iterations:   3600, Training Accuracy:  94.0%
+Iterations:   3650, Training Accuracy:  91.0%
+Iterations:   3700, Training Accuracy:  96.0%
+Iterations:   3750, Training Accuracy:  96.0%
+Iterations:   3800, Training Accuracy:  93.0%
+Iterations:   3850, Training Accuracy:  92.0%
+Iterations:   3900, Training Accuracy:  96.0%
+Iterations:   3950, Training Accuracy:  91.0%
+Iterations:   4000, Training Accuracy:  92.0%
+Iterations:   4050, Training Accuracy:  92.0%
+Iterations:   4100, Training Accuracy:  92.0%
+Iterations:   4150, Training Accuracy:  95.0%
+Iterations:   4200, Training Accuracy:  97.0%
+Iterations:   4250, Training Accuracy:  96.0%
+Iterations:   4300, Training Accuracy:  96.0%
+Iterations:   4350, Training Accuracy:  89.0%
+Iterations:   4400, Training Accuracy:  88.0%
+Iterations:   4450, Training Accuracy:  95.0%
+Iterations:   4500, Training Accuracy:  91.0%
+Iterations:   4550, Training Accuracy:  95.0%
+Iterations:   4600, Training Accuracy:  94.0%
+Iterations:   4650, Training Accuracy:  95.0%
+Iterations:   4700, Training Accuracy:  91.0%
+Iterations:   4750, Training Accuracy:  95.0%
+Iterations:   4800, Training Accuracy:  95.0%
+Iterations:   4850, Training Accuracy:  95.0%
+Iterations:   4900, Training Accuracy:  95.0%
+Iterations:   4950, Training Accuracy:  96.0%
+Iterations:   5000, Training Accuracy:  93.0%
+Iterations:   5050, Training Accuracy:  94.0%
+Iterations:   5100, Training Accuracy:  93.0%
+Iterations:   5150, Training Accuracy:  96.0%
+Iterations:   5200, Training Accuracy:  96.0%
+Iterations:   5250, Training Accuracy:  93.0%
+Iterations:   5300, Training Accuracy:  96.0%
+Iterations:   5350, Training Accuracy:  97.0%
+Iterations:   5400, Training Accuracy:  96.0%
+Iterations:   5450, Training Accuracy:  96.0%
+Time usage: 0:00:41
+Accuracy on Test-Set: 95.1% (9510 / 10000)
+Confusion matrix obtained:
+[[ 965    0    1    1    0    2    5    1    5    0]
+ [   0 1115    3    2    0    0    4    0   11    0]
+ [  11    0  975   13    5    0    3   12   13    0]
+ [   1    0   11  956    0   13    0   12   14    3]
+ [   0    1    5    1  916    0   13    3    3   40]
+ [   7    0    0   17    0  847    9    1   10    1]
+ [   8    3    1    0    5    7  931    0    3    0]
+ [   2    5   18    6    4    0    0  965    1   27]
+ [   8    0    4   15    8    8    8    9  903   11]
+ [  11    6    3   11   14    6    0   14    7  937]]

@@ -286,9 +286,9 @@ choice = 0
 while True:
     num = input("Escoger imagen: ")
     if int(num) == -1:
-        choice = num
         break
-    im = data.train.images[int(num)]
+    choice = int(num)
+    im = data.train.images[int(choice)]
     im = im.reshape((28,28))
     plt.imshow(im)
     plt.show()
