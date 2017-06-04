@@ -184,7 +184,7 @@ session = tf.Session(config=tf.ConfigProto(log_device_placement=True))
 session.run(tf.global_variables_initializer())
 
 # Entrenamiento realizado por batches.
-train_batch_size = 50
+train_batch_size = 20
 
 # Contador de iteraciones.
 total_iterations = 0
@@ -278,30 +278,33 @@ print_test_accuracy()
 
 for i in range(16):
     mask = session.run(weights_conv1)[:, :, 0, i]
-    f = plt.figure()
-    a = f.add_subplot(1,1,1)
     imgplot = plt.imshow(mask, cmap='gray')
-    a.set_title("Filter {}".format(i+1))
+    plt.title("Filtro {}".format(i+1))
     plt.show()
 
-num = 0
-for i, cls in enumerate(data.test.cls):
-    if int(cls) == 8:
-        num = i
-im = data.train.images[num]
-im = im.reshape((28,28))
-plt.imshow(im)
-plt.show()
-print(i)
+choice = 0
+while True:
+    num = input("Escoger imagen: ")
+    if int(num) == -1:
+        choice = num
+        break
+    im = data.train.images[int(num)]
+    im = im.reshape((28,28))
+    plt.imshow(im)
+    plt.show()
+
 for i in range(16):
     mask = session.run(weights_conv1)[:, :, 0, i]
-    im = data.train.images[num]
+    im = data.train.images[choice]
     im = im.reshape((28, 28))
     conv_img = convolve2d(im, mask)
     # Two subplots, unpack the axes array immediately
     f, (ax1, ax2) = plt.subplots(1, 2)
     ax1.imshow(mask, cmap='gray')
+    ax1.set_title("Filtro aplicado")
     ax2.imshow(conv_img)
+    ax2.set_title("Convolución obtenida")
+    plt.title("Convolución con filtro {}".format(i+1))
     plt.show()
 
 

@@ -1,9 +1,10 @@
+from datetime import timedelta
+from sklearn.metrics import confusion_matrix
+from tensorflow.examples.tutorials.mnist import input_data
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import numpy as np
-from sklearn.metrics import confusion_matrix
 import time
-from datetime import timedelta
 import math
 
 # Convolutional Layer 1.
@@ -17,7 +18,6 @@ num_filters2 = 36  # Hay 16 de estos filtros.
 # Fully-connected layer.
 fc_size = 128  # Número de neuronas de la capa fully-connected
 
-from tensorflow.examples.tutorials.mnist import input_data
 
 data = input_data.read_data_sets('data/MNIST/', one_hot=True)
 
@@ -176,6 +176,7 @@ cost = tf.reduce_mean(cross_entropy)
 optimizer = tf.train.AdamOptimizer(learning_rate=1e-4).minimize(cost)
 
 correct_prediction = tf.equal(y_pred_cls, y_true_cls)
+
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 session = tf.Session(config=tf.ConfigProto(log_device_placement=True))
@@ -268,20 +269,13 @@ def print_test_accuracy():
     print(conf_mat)
 
 
-for i in [20, 50, 100]:
-    # Entrenamiento realizado por batches.
-    train_batch_size = i
+num_iterations = int(10 * 55000 / train_batch_size)
 
-    # Contador de iteraciones.
-    total_iterations = 0
+print("Testing with batch size {0}, and {1} iteration".format(train_batch_size, num_iterations))
+# Definir número de iteraciones que desea entrenar a la red
+optimize(num_iterations=num_iterations)
 
-    num_iterations = int(10 * 55000 / train_batch_size)
-
-    print("Testing with batch size {0}, and {1} iteration".format(train_batch_size, num_iterations))
-    # Definir número de iteraciones que desea entrenar a la red
-    optimize(num_iterations=num_iterations)
-
-    print_test_accuracy()
+print_test_accuracy()
 
 # Si usted ejecuta esta linea de código debe cerrar el notebook y reiniciarlo.
 # Es solo para informar como liberar los recursos que ocupa TF.

@@ -187,9 +187,15 @@ train_batch_size = 100
 # Contador de iteraciones.
 total_iterations = 0
 
+# Progreso
+iteracion = []
+prog = []
+ciclo = []
+cic_prog = []
+
 
 def optimize(num_iterations):
-    global total_iterations
+    global total_iterations, iteracion, prog, ciclo, cic_prog
 
     # Tiempo de inicio
     start_time = time.time()
@@ -209,8 +215,16 @@ def optimize(num_iterations):
         # Se imprime elprogreso cada 100 iteraciones.
         if i % 50 == 0:
             acc = session.run(accuracy, feed_dict=feed_dict_train)
+            iteracion.append(i)
+            prog.append(acc)
+            if i % int(55000 / train_batch_size) == 0:
+                ciclo.append(i)
+                cic_prog.append(acc)
             msg = "Iterations: {0:>6}, Training Accuracy: {1:>6.1%}"
             print(msg.format(i, acc))
+
+    ciclo.append(i)
+    cic_prog.append(acc)
 
     acc = session.run(accuracy, feed_dict=feed_dict_train)
     msg = "Iterations: {0:>6}, Training Accuracy: {1:>6.1%}"
@@ -275,6 +289,13 @@ print("Testing with one convolution layer")
 optimize(num_iterations=5500)
 
 print_test_accuracy()
+
+plt.plot(ciclo, cic_prog)
+plt.title("Convergencia por época")
+plt.ylabel("Porcentaje de precisión")
+plt.xlabel("Número de iteraciones")
+plt.show()
+
 
 # Si usted ejecuta esta linea de código debe cerrar el notebook y reiniciarlo.
 # Es solo para informar como liberar los recursos que ocupa TF.
